@@ -223,6 +223,7 @@ const MessageList: React.FC<MessageListProps> = (props: MessageListProps) => {
         },
         CHAT_MESSAGE: {
           marginRight: "space0",
+          justifyContent: "flex-start",
         },
       }}
     >

@@ -118,6 +118,7 @@ const Settings: React.FC<SettingsProps> = (props: SettingsProps) => {
         onParticipantListOpen={() => props.setIsManageParticipantOpen(true)}
         leaveConvo={async () => {
           try {
+            await sdkConvo.updateAttributes(await sdkConvo.getMessagesCount());
             await sdkConvo.leave();
             successNotification({
               message: CONVERSATION_MESSAGES.LEFT,

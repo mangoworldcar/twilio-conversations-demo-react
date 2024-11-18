@@ -9,6 +9,7 @@ import Login from "./login/login";
 import AppContainer from "./AppContainer";
 import { actionCreators, AppState } from "../store";
 import { getToken } from "../api";
+import { at } from "lodash";
 
 function App(): ReactElement {
   const [loading, setLoading] = useState(true);
@@ -19,20 +20,23 @@ function App(): ReactElement {
   const username = localStorage.getItem("username") ?? "";
   const password = localStorage.getItem("password") ?? "";
 
-  const joinAllConversation = async (client: Client, conversations: []) => {
+  const joinAllConversation = async (
+    client: Client,
+    conversations: { sid: string; attributes: string }[]
+  ) => {
     try {
       for (const conversationObj of conversations) {
-        console.log(conversationObj);
         const { sid } = conversationObj; // 객체에서 sid 추출
-        console.log(`Processing conversation with SID: ${sid}`);
+        const { attributes } = conversationObj; // 객체에서 attributes 추출
         const conversation = await client.getConversationBySid(sid);
-        if (conversation.status !== "joined") {
+        const curConvoCount = await conversation.getMessagesCount();
+
+        console.log(Number(attributes), curConvoCount);
+        if (
+          conversation.status !== "joined" &&
+          Number(attributes) !== curConvoCount
+        ) {
           await conversation.join();
-          console.log(`Joined conversation with SID: ${conversation.sid}`);
-        } else {
-          console.log(
-            `Already joined conversation with SID: ${conversation.sid}`
-          );
         }
       }
     } catch (error) {
