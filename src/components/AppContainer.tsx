@@ -130,6 +130,21 @@ const AppContainer: React.FC = () => {
       );
     });
 
+    const joinSpecificConversation = async (client: Client) => {
+      try {
+        const conversation = await client.getConversationBySid("CHb13e06bf5cbf4fdf8ae8f7c742ac0dac");
+        
+        if (conversation.status !== "joined") {
+          await conversation.join();
+          console.log(`Joined conversation with SID: ${conversation.sid}`);
+        }
+      } catch (error) {
+        console.error("Failed to join conversation:", error);
+      }
+    };
+  
+    joinSpecificConversation(client);
+
     client.on("conversationJoined", (conversation) => {
       upsertConversation(conversation);
 

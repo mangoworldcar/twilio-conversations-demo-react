@@ -15,6 +15,7 @@ import {
 import { MoreIcon } from "@twilio-paste/icons/esm/MoreIcon";
 import { UserIcon } from "@twilio-paste/icons/esm/UserIcon";
 import { ArrowBackIcon } from "@twilio-paste/icons/esm/ArrowBackIcon";
+import { DeleteIcon } from "@twilio-paste/icons/esm/DeleteIcon";
 import { Text } from "@twilio-paste/text";
 import { NotificationLevel } from "@twilio/conversations";
 
@@ -103,6 +104,26 @@ const SettingsMenu: React.FC<SettingsMenuProps> = (
                 _hover={{ color: "colorTextError", cursor: "pointer" }}
               >
                 {leaveConvo}
+              </Text>
+            </MediaBody>
+          </MediaObject>
+        </MenuItem>
+        <MenuItem {...menu} onClick={props.leaveConvo}>
+          <MediaObject verticalAlign="center">
+            <MediaFigure spacing="space20">
+              <DeleteIcon
+                decorative={false}
+                title="information"
+                color="colorTextError"
+              />
+            </MediaFigure>
+            <MediaBody>
+              <Text
+                as="a"
+                color="colorTextError"
+                _hover={{ color: "colorTextError", cursor: "pointer" }}
+              >
+                {"Delete Conversation"}
               </Text>
             </MediaBody>
           </MediaObject>

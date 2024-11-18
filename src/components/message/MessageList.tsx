@@ -234,10 +234,6 @@ const MessageList: React.FC<MessageListProps> = (props: MessageListProps) => {
             }
             messageFiles.push(file);
           });
-          const attributes = message.attributes as Record<
-            string,
-            ReactionsType | undefined
-          >;
 
           const wrappedBody = wrap(message.body ?? "", {
             width: MAX_MESSAGE_LINE_WIDTH,
@@ -248,17 +244,17 @@ const MessageList: React.FC<MessageListProps> = (props: MessageListProps) => {
           const isOutbound =
             message.author === localStorage.getItem("username");
           let metaItems = [
-            <ChatMessageMetaItem key={0}>
-              <Reactions
-                reactions={attributes.reactions}
-                onReactionsChanged={(reactions) => {
-                  getSdkMessageObject(message).updateAttributes({
-                    ...attributes,
-                    reactions,
-                  });
-                }}
-              />
-            </ChatMessageMetaItem>,
+            // <ChatMessageMetaItem key={0}>
+            //   <Reactions
+            //     reactions={attributes.reactions}
+            //     onReactionsChanged={(reactions) => {
+            //       getSdkMessageObject(message).updateAttributes({
+            //         ...attributes,
+            //         reactions,
+            //       });
+            //     }}
+            //   />
+            // </ChatMessageMetaItem>,
             <MetaItemWithMargin key={1}>
               <MessageStatus
                 message={message}
@@ -304,51 +300,74 @@ const MessageList: React.FC<MessageListProps> = (props: MessageListProps) => {
                   </Box>
                 </>
               )}
-              <ChatMessage
-                variant={isOutbound ? "outbound" : "inbound"}
-                key={`${message.sid}.message`}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: `${
+                    getAuthorFriendlyName(message) === "whatsapp:+821084656951"
+                      ? "flex-end"
+                      : "flex-start"
+                  }`,
+                }}
               >
-                <ChatBubble>
-                  {wrappedBody}
-                  <MessageMedia
-                    key={message.sid}
-                    attachments={conversationAttachments?.[message.sid]}
-                    onDownload={async () =>
-                      await onDownloadAttachments(message)
-                    }
-                    images={messageImages}
-                    files={messageFiles}
-                    sending={message.index === -1}
-                    onOpen={(
-                      mediaSid: string,
-                      image?: ReduxMedia,
-                      file?: ReduxMedia
-                    ) => {
-                      if (file) {
-                        onFileOpen(
-                          conversationAttachments?.[message.sid][mediaSid],
-                          file
-                        );
-                        return;
-                      }
-                      if (image) {
-                        setImagePreview({
-                          message,
-                          file: conversationAttachments?.[message.sid][
-                            mediaSid
-                          ],
-                          sid: mediaSid,
-                        });
-                      }
-                    }}
-                  />
-                </ChatBubble>
-                <ChatMessageMeta
-                  aria-label={`said by ${getAuthorFriendlyName(message)}`}
+                <ChatMessage
+                  variant={isOutbound ? "outbound" : "inbound"}
+                  key={`${message.sid}.message`}
                 >
-                  {metaItems}
-                </ChatMessageMeta>
-              </ChatMessage>
+                  <ChatBubble>
+                    {wrappedBody}
+                    <MessageMedia
+                      key={message.sid}
+                      attachments={conversationAttachments?.[message.sid]}
+                      onDownload={async () =>
+                        await onDownloadAttachments(message)
+                      }
+                      images={messageImages}
+                      files={messageFiles}
+                      sending={message.index === -1}
+                      onOpen={(
+                        mediaSid: string,
+                        image?: ReduxMedia,
+                        file?: ReduxMedia
+                      ) => {
+                        if (file) {
+                          onFileOpen(
+                            conversationAttachments?.[message.sid][mediaSid],
+                            file
+                          );
+                          return;
+                        }
+                        if (image) {
+                          setImagePreview({
+                            message,
+                            file: conversationAttachments?.[message.sid][
+                              mediaSid
+                            ],
+                            sid: mediaSid,
+                          });
+                        }
+                      }}
+                    />
+                  </ChatBubble>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: `${
+                        getAuthorFriendlyName(message) ===
+                        "whatsapp:+821084656951"
+                          ? "flex-end"
+                          : "flex-start"
+                      }`,
+                    }}
+                  >
+                    <ChatMessageMeta
+                      aria-label={`said by ${getAuthorFriendlyName(message)}`}
+                    >
+                      {metaItems}
+                    </ChatMessageMeta>
+                  </div>
+                </ChatMessage>
+              </div>
             </div>
             // todo: delete only when full functionality is transferred over
             // <div key={message.sid + "message"}>
