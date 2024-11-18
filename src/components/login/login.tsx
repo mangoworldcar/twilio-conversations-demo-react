@@ -23,14 +23,14 @@ async function login(
   setToken: (token: string) => void
 ): Promise<string> {
   try {
-    const token = await getToken(username.trim(), password);
-    if (token === "") {
+    const data = await getToken(username.trim(), password);
+    if (data.token === "") {
       return "Received an empty token from backend.";
     }
 
     localStorage.setItem("username", username);
     localStorage.setItem("password", password);
-    setToken(token);
+    setToken(data.token);
 
     return "";
   } catch (error) {

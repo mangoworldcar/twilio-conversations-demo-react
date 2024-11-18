@@ -130,20 +130,6 @@ const AppContainer: React.FC = () => {
       );
     });
 
-    const joinSpecificConversation = async (client: Client) => {
-      try {
-        const conversation = await client.getConversationBySid("CHb13e06bf5cbf4fdf8ae8f7c742ac0dac");
-        
-        if (conversation.status !== "joined") {
-          await conversation.join();
-          console.log(`Joined conversation with SID: ${conversation.sid}`);
-        }
-      } catch (error) {
-        console.error("Failed to join conversation:", error);
-      }
-    };
-  
-    joinSpecificConversation(client);
 
     client.on("conversationJoined", (conversation) => {
       upsertConversation(conversation);
@@ -248,16 +234,16 @@ const AppContainer: React.FC = () => {
 
     client.on("tokenAboutToExpire", async () => {
       if (username && password) {
-        const token = await getToken(username, password);
-        await client.updateToken(token);
-        login(token);
+        const data = await getToken(username, password);
+        await client.updateToken(data.token);
+        login(data.token);
       }
     });
 
     client.on("tokenExpired", async () => {
       if (username && password) {
-        const token = await getToken(username, password);
-        login(token);
+        const data = await getToken(username, password);
+        login(data.token);
         setClientIteration((x) => x + 1);
       }
     });

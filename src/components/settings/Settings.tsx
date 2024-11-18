@@ -128,6 +128,18 @@ const Settings: React.FC<SettingsProps> = (props: SettingsProps) => {
             unexpectedErrorNotification(e.message, addNotifications);
           }
         }}
+        deleteConvo={async () => {
+          try {
+            await sdkConvo.delete();
+            successNotification({
+              message: CONVERSATION_MESSAGES.DELETED,
+              addNotifications,
+            });
+            updateCurrentConversation("");
+          } catch (e) {
+            unexpectedErrorNotification(e.message, addNotifications);
+          }
+        }}
         conversation={props.convo}
         addNotifications={addNotifications}
       />

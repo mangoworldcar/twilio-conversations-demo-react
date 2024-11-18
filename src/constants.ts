@@ -19,6 +19,7 @@ export const CONVERSATION_MESSAGES = {
   CREATED: "Conversation created.",
   NAME_CHANGED: "Conversation name changed.",
   LEFT: "You left the conversation.",
+  DELETED: "Conversation deleted.",
 };
 
 export const PARTICIPANT_MESSAGES = {

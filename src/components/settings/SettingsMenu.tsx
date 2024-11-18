@@ -32,6 +32,7 @@ import { useSelector } from "react-redux";
 
 interface SettingsMenuProps {
   leaveConvo: () => void;
+  deleteConvo: () => void;
   conversation: ReduxConversation;
   onParticipantListOpen: () => void;
   addNotifications: (messages: NotificationsType) => void;
@@ -67,7 +68,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = (
         <MoreIcon decorative={false} title="Settings" />
       </MenuButton>
       <Menu {...menu} aria-label="Preferences">
-        <MenuItem {...menu}>
+        {/* <MenuItem {...menu}>
           <MediaObject verticalAlign="center" onClick={toggleMuteConversation}>
             <MediaFigure spacing="space20">
               {muted ? <Bell /> : <BellMuted />}
@@ -87,7 +88,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = (
             <MediaBody>{manageParticipants}</MediaBody>
           </MediaObject>
         </MenuItem>
-        <MenuSeparator {...menu} />
+        <MenuSeparator {...menu} /> */}
         <MenuItem {...menu} onClick={props.leaveConvo}>
           <MediaObject verticalAlign="center">
             <MediaFigure spacing="space20">
@@ -108,7 +109,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = (
             </MediaBody>
           </MediaObject>
         </MenuItem>
-        <MenuItem {...menu} onClick={props.leaveConvo}>
+        <MenuItem {...menu} onClick={props.deleteConvo}>
           <MediaObject verticalAlign="center">
             <MediaFigure spacing="space20">
               <DeleteIcon

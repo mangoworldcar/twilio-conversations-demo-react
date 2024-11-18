@@ -75,12 +75,12 @@ const ManageParticipantsModal: React.FC<ManageParticipantsModalProps> = (
                 <ChevronDownIcon decorative size="sizeIcon10" />
               </MenuButton>
               <Menu {...menu} aria-label="Preferences">
-                <MenuItem
+                {/* <MenuItem
                   {...menu}
                   onClick={() => props.onClick(Content.AddSMS)}
                 >
                   {smsParticipant}
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem
                   {...menu}
                   onClick={() => {
@@ -89,14 +89,14 @@ const ManageParticipantsModal: React.FC<ManageParticipantsModalProps> = (
                 >
                   {whatsAppParticipant}
                 </MenuItem>
-                <MenuItem
+                {/* <MenuItem
                   {...menu}
                   onClick={() => {
                     props.onClick(Content.AddChat);
                   }}
                 >
                   {chatParticipant}
-                </MenuItem>
+                </MenuItem> */}
               </Menu>
             </Box>
             <Box
@@ -141,7 +141,7 @@ const ManageParticipantsModal: React.FC<ManageParticipantsModalProps> = (
                                 "unknown"}
                           </Text>
                         </Td>
-                        <Td textAlign="right">
+                        {/* <Td textAlign="right">
                           {user.identity !==
                           localStorage.getItem("username") ? (
                             <Anchor
@@ -151,7 +151,7 @@ const ManageParticipantsModal: React.FC<ManageParticipantsModalProps> = (
                               {remove}
                             </Anchor>
                           ) : null}
-                        </Td>
+                        </Td> */}
                       </Tr>
                     ))
                   ) : (

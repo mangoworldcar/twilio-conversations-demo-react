@@ -48,6 +48,7 @@ import {
 } from "./../../utils/timestampUtils";
 import { useDropzone } from "react-dropzone";
 import { MAX_FILE_SIZE } from "../../constants";
+import { marginRight } from "@twilio-paste/styling-library";
 
 interface MessageListProps {
   messages: ReduxMessage[];
@@ -217,6 +218,11 @@ const MessageList: React.FC<MessageListProps> = (props: MessageListProps) => {
           backgroundColor: isDragActive
             ? "colorBackgroundPrimaryWeakest"
             : null,
+          paddingRight: "space0",
+          paddingLeft: "space0",
+        },
+        CHAT_MESSAGE: {
+          marginRight: "space0",
         },
       }}
     >
@@ -262,15 +268,17 @@ const MessageList: React.FC<MessageListProps> = (props: MessageListProps) => {
               />
             </MetaItemWithMargin>,
             <MetaItemWithMargin key={2}>
-              {isOutbound
-                ? `${getAuthorFriendlyName(message)}・${getMessageTime(
-                    message,
-                    use24hTimeFormat
-                  )}`
-                : `${getMessageTime(
-                    message,
-                    use24hTimeFormat
-                  )}・${getAuthorFriendlyName(message)}`}
+              <span style={{ whiteSpace: "pre-wrap" }}>
+                {isOutbound
+                  ? `${getAuthorFriendlyName(message)}\n${getMessageTime(
+                      message,
+                      use24hTimeFormat
+                    )}`
+                  : `${getMessageTime(
+                      message,
+                      use24hTimeFormat
+                    )}\n${getAuthorFriendlyName(message)}`}
+              </span>
             </MetaItemWithMargin>,
           ];
 
@@ -304,7 +312,7 @@ const MessageList: React.FC<MessageListProps> = (props: MessageListProps) => {
                 style={{
                   display: "flex",
                   justifyContent: `${
-                    getAuthorFriendlyName(message) === "whatsapp:+821084656951"
+                    getAuthorFriendlyName(message) === "mangoES"
                       ? "flex-end"
                       : "flex-start"
                   }`,
@@ -314,47 +322,57 @@ const MessageList: React.FC<MessageListProps> = (props: MessageListProps) => {
                   variant={isOutbound ? "outbound" : "inbound"}
                   key={`${message.sid}.message`}
                 >
-                  <ChatBubble>
-                    {wrappedBody}
-                    <MessageMedia
-                      key={message.sid}
-                      attachments={conversationAttachments?.[message.sid]}
-                      onDownload={async () =>
-                        await onDownloadAttachments(message)
-                      }
-                      images={messageImages}
-                      files={messageFiles}
-                      sending={message.index === -1}
-                      onOpen={(
-                        mediaSid: string,
-                        image?: ReduxMedia,
-                        file?: ReduxMedia
-                      ) => {
-                        if (file) {
-                          onFileOpen(
-                            conversationAttachments?.[message.sid][mediaSid],
-                            file
-                          );
-                          return;
-                        }
-                        if (image) {
-                          setImagePreview({
-                            message,
-                            file: conversationAttachments?.[message.sid][
-                              mediaSid
-                            ],
-                            sid: mediaSid,
-                          });
-                        }
-                      }}
-                    />
-                  </ChatBubble>
                   <div
                     style={{
                       display: "flex",
                       justifyContent: `${
-                        getAuthorFriendlyName(message) ===
-                        "whatsapp:+821084656951"
+                        getAuthorFriendlyName(message) === "mangoES"
+                          ? "flex-end"
+                          : "flex-start"
+                      }`,
+                    }}
+                  >
+                    <ChatBubble>
+                      {wrappedBody}
+                      <MessageMedia
+                        key={message.sid}
+                        attachments={conversationAttachments?.[message.sid]}
+                        onDownload={async () =>
+                          await onDownloadAttachments(message)
+                        }
+                        images={messageImages}
+                        files={messageFiles}
+                        sending={message.index === -1}
+                        onOpen={(
+                          mediaSid: string,
+                          image?: ReduxMedia,
+                          file?: ReduxMedia
+                        ) => {
+                          if (file) {
+                            onFileOpen(
+                              conversationAttachments?.[message.sid][mediaSid],
+                              file
+                            );
+                            return;
+                          }
+                          if (image) {
+                            setImagePreview({
+                              message,
+                              file: conversationAttachments?.[message.sid][
+                                mediaSid
+                              ],
+                              sid: mediaSid,
+                            });
+                          }
+                        }}
+                      />
+                    </ChatBubble>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: `${
+                        getAuthorFriendlyName(message) === "mangoES"
                           ? "flex-end"
                           : "flex-start"
                       }`,

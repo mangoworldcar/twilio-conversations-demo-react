@@ -1,5 +1,5 @@
 import { ModalBody, Box } from "@twilio-paste/core";
-import { RefObject } from "react";
+import { RefObject, useEffect } from "react";
 import ModalInputField from "./ModalInputField";
 import AddParticipantFooter from "./addParticipantFooter";
 import { ActionName } from "../../types";
@@ -32,8 +32,10 @@ const AddWhatsAppParticipantModal: React.FC<AddWhatsAppParticipantModalProps> =
     );
     const whatsAppNum = getTranslation(local, "whatsAppNum");
     const whatsAppHelpTxt = getTranslation(local, "whatsAppHelpTxt");
-    const proxyNum = getTranslation(local, "proxyNum");
-    const proxyNumHelpTxt = getTranslation(local, "proxyNumHelpTxt");
+
+    useEffect(() => {
+      props.setProxyName("821084656951");
+    }, []);
 
     return (
       <>
@@ -59,19 +61,10 @@ const AddWhatsAppParticipantModal: React.FC<AddWhatsAppParticipantModalProps> =
                   isFocused={true}
                   label={whatsAppNum}
                   input={props.name}
-                  placeholder="123456789012"
+                  placeholder="82XXXXXXXXXX"
                   onChange={props.setName}
                   error={props.error}
                   help_text={whatsAppHelpTxt}
-                  prefixType="WhatsApp"
-                />
-                <ModalInputField
-                  label={proxyNum}
-                  input={props.proxyName}
-                  placeholder="123456789012"
-                  onChange={props.setProxyName}
-                  error={props.errorProxy}
-                  help_text={proxyNumHelpTxt}
                   prefixType="WhatsApp"
                 />
               </Box>
