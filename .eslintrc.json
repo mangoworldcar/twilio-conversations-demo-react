@@ -7,5 +7,25 @@
   "extends": [
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "plugins": ["unused-imports"],
+      "rules": {
+        // 사용하지 않는 import 자동 제거
+        "unused-imports/no-unused-imports": "error",
+        // 사용하지 않는 변수 감지
+        "unused-imports/no-unused-vars": [
+          "warn",
+          {
+            "vars": "all",
+            "varsIgnorePattern": "^_", // 무시할 변수 패턴 (예: _로 시작하는 변수)
+            "args": "after-used",
+            "argsIgnorePattern": "^_" // 무시할 매개변수 패턴
+          }
+        ]
+      }
+    }
   ]
 }

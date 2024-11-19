@@ -8,7 +8,6 @@ import {
 } from "@twilio-paste/media-object";
 import { MoreIcon } from "@twilio-paste/icons/esm/MoreIcon";
 import { ArrowBackIcon } from "@twilio-paste/icons/esm/ArrowBackIcon";
-import { DeleteIcon } from "@twilio-paste/icons/esm/DeleteIcon";
 import { Text } from "@twilio-paste/text";
 
 import { NotificationsType } from "../../store/reducers/notificationsReducer";
@@ -59,26 +58,6 @@ const SettingsMenu: React.FC<SettingsMenuProps> = (
             </MediaBody>
           </MediaObject>
         </MenuItem>
-        {/* <MenuItem {...menu} onClick={props.deleteConvo}>
-          <MediaObject verticalAlign="center">
-            <MediaFigure spacing="space20">
-              <DeleteIcon
-                decorative={false}
-                title="information"
-                color="colorTextError"
-              />
-            </MediaFigure>
-            <MediaBody>
-              <Text
-                as="a"
-                color="colorTextError"
-                _hover={{ color: "colorTextError", cursor: "pointer" }}
-              >
-                {"Delete Conversation"}
-              </Text>
-            </MediaBody>
-          </MediaObject>
-        </MenuItem> */}
       </Menu>
     </Box>
   );

@@ -1,5 +1,4 @@
 import {
-  Anchor,
   Box,
   ModalBody,
   Table,
@@ -40,10 +39,7 @@ const ManageParticipantsModal: React.FC<ManageParticipantsModalProps> = (
   const local = useSelector((state: AppState) => state.local);
   const participants = getTranslation(local, "participants");
   const addParticipant = getTranslation(local, "addParticipant");
-  const smsParticipant = getTranslation(local, "smsParticipant");
   const whatsAppParticipant = getTranslation(local, "whatsAppParticipant");
-  const chatParticipant = getTranslation(local, "chatParticipant");
-  const remove = getTranslation(local, "remove");
 
   return (
     <>

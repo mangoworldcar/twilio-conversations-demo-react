@@ -9,7 +9,6 @@ import Login from "./login/login";
 import AppContainer from "./AppContainer";
 import { actionCreators, AppState } from "../store";
 import { getToken } from "../api";
-import { at } from "lodash";
 
 function App(): ReactElement {
   const [loading, setLoading] = useState(true);
@@ -31,7 +30,6 @@ function App(): ReactElement {
         const conversation = await client.getConversationBySid(sid);
         const curConvoCount = await conversation.getMessagesCount();
 
-        console.log(Number(attributes), curConvoCount);
         if (
           conversation.status !== "joined" &&
           Number(attributes) !== curConvoCount

@@ -7,7 +7,6 @@ import styles from "../styles";
 import { Client, ConnectionState, User } from "@twilio/conversations";
 import UserProfileModal from "./modals/UserProfileModal";
 import { readUserProfile } from "../api";
-import { AppLogo, LOGO_SUB_TITLE, LOGO_TITLE } from "../branding";
 import { useSelector } from "react-redux";
 import { AppState } from "../store";
 import { getTranslation } from "./../utils/localUtils";

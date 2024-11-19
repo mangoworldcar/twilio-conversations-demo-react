@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@twilio-paste/button";
 import { Box } from "@twilio-paste/core";
-import { ProductConversationsIcon } from "@twilio-paste/icons/esm/ProductConversationsIcon";
 
 import { getToken } from "../../api";
 import { InputType } from "../../types";

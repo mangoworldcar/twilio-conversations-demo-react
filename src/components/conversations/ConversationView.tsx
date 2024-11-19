@@ -78,6 +78,7 @@ const ConversationView: React.FC<SingleConvoProps> = (
     lastMessage,
     unreadMessagesCount,
     use24hTimeFormat,
+    messages,
   } = props;
   const [backgroundColor, setBackgroundColor] = useState();
   const title = truncateMiddle(
@@ -165,11 +166,16 @@ const ConversationView: React.FC<SingleConvoProps> = (
               color: muted
                 ? theme.textColors.colorTextInverseWeaker
                 : theme.textColors.colorText,
+              display: "flex",
+              flexDirection: "column",
             }}
           >
             {muted ? <BellMuted /> : null}
             <span style={{ verticalAlign: "top", paddingLeft: muted ? 4 : 0 }}>
               {title}
+            </span>
+            <span style={{ verticalAlign: "top", paddingLeft: muted ? 4 : 0 }}>
+              {messages ? messages[0].author ?? "" : ""}
             </span>
           </Box>
           {unreadMessagesCount > 0 && (

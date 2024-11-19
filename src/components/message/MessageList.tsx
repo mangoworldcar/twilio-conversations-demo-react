@@ -24,7 +24,6 @@ import { CustomizationProvider } from "@twilio-paste/core/customization";
 import { getBlobFile } from "../../api";
 import { actionCreators, AppState } from "../../store";
 import ImagePreviewModal from "../modals/ImagePreviewModal";
-import type { ReactionsType } from "./Reactions";
 import MessageMedia from "./MessageMedia";
 import { ReduxConversation } from "../../store/reducers/convoReducer";
 import {
@@ -33,12 +32,10 @@ import {
 } from "../../store/reducers/messageListReducer";
 import {
   getSdkMediaObject,
-  getSdkMessageObject,
   getSdkParticipantObject,
 } from "../../conversations-objects";
 import { getSdkConversationObject } from "../../conversations-objects";
 import { ReduxParticipant } from "../../store/reducers/participantsReducer";
-import Reactions from "./Reactions";
 import { MessageStatus } from "./MessageStatus";
 import { MAX_MESSAGE_LINE_WIDTH } from "../../constants";
 import wrap from "word-wrap";
@@ -48,7 +45,6 @@ import {
 } from "./../../utils/timestampUtils";
 import { useDropzone } from "react-dropzone";
 import { MAX_FILE_SIZE } from "../../constants";
-import { marginRight } from "@twilio-paste/styling-library";
 
 interface MessageListProps {
   messages: ReduxMessage[];
