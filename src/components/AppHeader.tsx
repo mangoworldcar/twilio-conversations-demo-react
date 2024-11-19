@@ -59,13 +59,13 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   return (
     <div style={styles.appHeader}>
       <div style={styles.flex}>
-        <div style={styles.appLogoWrapper}>
-          <AppLogo />
-        </div>
-        <div style={styles.appLogoTitle}>
-          {LOGO_TITLE}
-          <div style={styles.appLogoSubTitle}>{LOGO_SUB_TITLE}</div>
-        </div>
+        {/* <div style={styles.appLogoWrapper}> */}
+        <img
+          src="https://mangoworldcar.com/_next/image?url=%2Fassets%2Fimages%2Fpng%2Flogo_white.png&w=256&q=75"
+          alt="Mango Conversations Logo"
+          style={{ height: "30px" }}
+        />
+        {/* </div> */}
       </div>
       <div style={styles.userTile}>
         <Avatar name={user} />

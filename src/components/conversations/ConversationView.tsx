@@ -159,9 +159,9 @@ const ConversationView: React.FC<SingleConvoProps> = (
         <Box display="flex">
           <Box
             style={{
-              width: 288,
+              width: 248,
               fontWeight: theme.fontWeights.fontWeightSemibold,
-              fontSize: 14,
+              fontSize: 11,
               color: muted
                 ? theme.textColors.colorTextInverseWeaker
                 : theme.textColors.colorText,

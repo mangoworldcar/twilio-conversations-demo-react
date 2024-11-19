@@ -80,13 +80,16 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
       <AlertsView />
       <Box style={styles.loginContent}>
         <Box>
-          <ProductConversationsIcon
+          {/* <ProductConversationsIcon
             decorative={true}
             size="sizeIcon90"
             color="colorTextInverse"
+          /> */}
+          <img
+            src="https://mangoworldcar.com/_next/image?url=%2Fassets%2Fimages%2Fpng%2Flogo_white.png&w=256&q=75"
+            alt="Mango Conversations Logo"
           />
         </Box>
-        <div style={styles.loginTitle}>Mango Conversations</div>
         <div style={styles.subTitle}></div>
         <Box style={styles.loginForm}>
           <Box style={styles.userInput}>
