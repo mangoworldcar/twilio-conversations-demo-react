@@ -175,7 +175,7 @@ const ConversationView: React.FC<SingleConvoProps> = (
               {title}
             </span>
             <span style={{ verticalAlign: "top", paddingLeft: muted ? 4 : 0 }}>
-              {messages ? messages[0].author ?? "" : ""}
+              {messages ? messages[0]?.author ?? "" : ""}
             </span>
           </Box>
           {unreadMessagesCount > 0 && (
