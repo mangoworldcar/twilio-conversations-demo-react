@@ -16,6 +16,7 @@ import { ReduxConversation } from "../../store/reducers/convoReducer";
 import { AppState } from "../../store";
 import { getTranslation } from "./../../utils/localUtils";
 import { useSelector } from "react-redux";
+import { DeleteIcon } from "@twilio-paste/icons/cjs/DeleteIcon";
 
 interface SettingsMenuProps {
   leaveConvo: () => void;
@@ -54,6 +55,26 @@ const SettingsMenu: React.FC<SettingsMenuProps> = (
                 _hover={{ color: "colorTextError", cursor: "pointer" }}
               >
                 {leaveConvo}
+              </Text>
+            </MediaBody>
+          </MediaObject>
+        </MenuItem>
+        <MenuItem {...menu} onClick={props.deleteConvo}>
+          <MediaObject verticalAlign="center">
+            <MediaFigure spacing="space20">
+              <DeleteIcon
+                decorative={false}
+                title="information"
+                color="colorTextError"
+              />
+            </MediaFigure>
+            <MediaBody>
+              <Text
+                as="a"
+                color="colorTextError"
+                _hover={{ color: "colorTextError", cursor: "pointer" }}
+              >
+                {"Delete Conversation"}
               </Text>
             </MediaBody>
           </MediaObject>

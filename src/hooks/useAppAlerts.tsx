@@ -6,7 +6,7 @@ const useAppAlert = (): [boolean, React.FC] => {
   const [alertVisible, setAlertVisible] = useState(!window.navigator.onLine);
 
   useEffect(() => {
-    setAlertVisible(!window.navigator.onLine);
+    setAlertVisible(true);
   }, [window.navigator.onLine]);
 
   const AlertComponent = () => (

@@ -20,7 +20,6 @@ import {
   SetUnreadMessagesType,
 } from "../types";
 import { getToken } from "../api";
-import useAppAlert from "../hooks/useAppAlerts";
 import Notifications from "./Notifications";
 import stylesheet from "../styles";
 import { handlePromiseRejection } from "../helpers";
@@ -66,8 +65,6 @@ const AppContainer: React.FC = () => {
   const conversations = useSelector((state: AppState) => state.convos);
   const sid = useSelector((state: AppState) => state.sid);
   const sidRef = useRef("");
-  const [alertsExist, AlertsView] = useAppAlert();
-  sidRef.current = sid;
 
   const username = localStorage.getItem("username");
   const password = localStorage.getItem("password");
@@ -170,6 +167,7 @@ const AppContainer: React.FC = () => {
       }, addNotifications);
     });
     client.on("messageAdded", async (message: Message) => {
+      console.log(message);
       await upsertMessage(message, upsertMessages, updateUnreadMessages);
       if (message.author === localStorage.getItem("username")) {
         clearAttachments(message.conversation.sid, "-1");
@@ -295,7 +293,7 @@ const AppContainer: React.FC = () => {
 
   return (
     <Box style={stylesheet.appWrapper}>
-      <AlertsView />
+      {/* <AlertsView /> */}
       <Notifications />
       <Box>
         <AppHeader
@@ -314,7 +312,7 @@ const AppContainer: React.FC = () => {
           connectionState={connectionState ?? "disconnected"}
         />
       </Box>
-      <Box style={stylesheet.appContainer(alertsExist)}>
+      <Box style={stylesheet.appContainer(false)}>
         <ConversationsContainer client={client} />
         <Box style={stylesheet.messagesWrapper}>
           <ConversationContainer

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { ReactElement } from "react";
-import { Client } from "@twilio/conversations";
+import { Client, Conversation, Paginator } from "@twilio/conversations";
 import { Box, Spinner } from "@twilio-paste/core";
 
 import Login from "./login/login";
@@ -24,23 +24,35 @@ function App(): ReactElement {
     conversations: { sid: string; attributes: string }[]
   ) => {
     try {
-      for (const conversationObj of conversations) {
-        const { sid } = conversationObj; // 객체에서 sid 추출
-        const { attributes } = conversationObj; // 객체에서 attributes 추출
-        const conversation = await client.getConversationBySid(sid);
-        const curConvoCount = await conversation.getMessagesCount();
+      for (const convo of conversations) {
+        console.log(convo);
 
-        if (
-          conversation.status !== "joined" &&
-          Number(attributes) !== curConvoCount
-        ) {
-          await conversation.join();
-        }
+        const { sid } = convo;
+        const conversation = await client.peekConversationBySid(sid);
+        await conversation.join();
       }
     } catch (error) {
       console.error("Failed to join conversation:", error);
     }
   };
+
+  function findUnsubscribedSids(
+    subscribedConvo: Paginator<Conversation>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: { token?: string; conversations: any[] }
+  ) {
+    // subscribedConvo.items의 sid를 Set으로 저장
+    const subscribedSids = new Set(
+      subscribedConvo.items.map((item) => item.sid)
+    );
+
+    // data.conversations의 sid 중 subscribedSids에 없는 sid 찾기
+    const unsubscribedSids = data.conversations.filter(
+      (convo) => !subscribedSids.has(convo.sid)
+    );
+
+    return unsubscribedSids;
+  }
 
   useEffect(() => {
     if (username.length > 0 && password.length > 0) {
@@ -48,8 +60,10 @@ function App(): ReactElement {
         .then(async (data) => {
           login(data.token);
           const client = new Client(data.token);
+          const subscribedConvo = await client.getSubscribedConversations();
 
-          await joinAllConversation(client, data.conversations);
+          const notJoinedConvo = findUnsubscribedSids(subscribedConvo, data);
+          await joinAllConversation(client, notJoinedConvo);
         })
         .catch(() => {
           localStorage.setItem("username", "");

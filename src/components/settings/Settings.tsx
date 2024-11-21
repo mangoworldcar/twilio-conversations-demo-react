@@ -4,7 +4,6 @@ import { bindActionCreators } from "redux";
 
 import { Client } from "@twilio/conversations";
 
-import SettingsMenu from "./SettingsMenu";
 import ManageParticipantsModal from "../modals/manageParticipantsModal";
 import { Content } from "../../types";
 import {
@@ -18,15 +17,11 @@ import AddWhatsAppParticipantModal from "../modals/addWhatsAppParticipant";
 import { actionCreators } from "../../store";
 import ActionErrorModal from "../modals/ActionErrorModal";
 import {
-  CONVERSATION_MESSAGES,
   ERROR_MODAL_MESSAGES,
   SMS_PREFIX,
   WHATSAPP_PREFIX,
 } from "../../constants";
-import {
-  successNotification,
-  unexpectedErrorNotification,
-} from "../../helpers";
+
 import { ReduxConversation } from "../../store/reducers/convoReducer";
 import {
   getSdkConversationObject,
@@ -114,7 +109,7 @@ const Settings: React.FC<SettingsProps> = (props: SettingsProps) => {
 
   return (
     <>
-      <SettingsMenu
+      {/* <SettingsMenu
         onParticipantListOpen={() => props.setIsManageParticipantOpen(true)}
         leaveConvo={async () => {
           try {
@@ -143,7 +138,7 @@ const Settings: React.FC<SettingsProps> = (props: SettingsProps) => {
         }}
         conversation={props.convo}
         addNotifications={addNotifications}
-      />
+      /> */}
       <ActionErrorModal
         errorText={showError || ERROR_MODAL_MESSAGES.CHANGE_CONVERSATION_NAME}
         isOpened={!!showError}

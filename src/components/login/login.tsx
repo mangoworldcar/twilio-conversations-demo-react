@@ -7,7 +7,6 @@ import { InputType } from "../../types";
 import ModalInputField from "../modals/ModalInputField";
 import styles from "../../styles";
 import TwilioLogo from "../icons/TwilioLogo";
-import useAppAlert from "../../hooks/useAppAlerts";
 import React from "react";
 
 type SetTokenType = (token: string) => void;
@@ -49,7 +48,7 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
   const [formError, setFormError] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [, AlertsView] = useAppAlert();
+  // const [, AlertsView] = useAppAlert();
 
   const handleLogin = async () => {
     const error = await login(username, password, props.setToken);
@@ -76,7 +75,7 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
 
   return (
     <Box style={styles.loginContainer}>
-      <AlertsView />
+      {/* <AlertsView /> */}
       <Box style={styles.loginContent}>
         <Box>
           {/* <ProductConversationsIcon
