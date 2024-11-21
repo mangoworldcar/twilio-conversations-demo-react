@@ -17,6 +17,7 @@ import AddWhatsAppParticipantModal from "../modals/addWhatsAppParticipant";
 import { actionCreators } from "../../store";
 import ActionErrorModal from "../modals/ActionErrorModal";
 import {
+  CONVERSATION_MESSAGES,
   ERROR_MODAL_MESSAGES,
   SMS_PREFIX,
   WHATSAPP_PREFIX,
@@ -31,6 +32,11 @@ import { ReduxParticipant } from "../../store/reducers/participantsReducer";
 import { isValidPhoneNumber } from "libphonenumber-js";
 import { AppState } from "../../store";
 import { getTranslation } from "./../../utils/localUtils";
+import {
+  successNotification,
+  unexpectedErrorNotification,
+} from "../../helpers";
+import SettingsMenu from "./SettingsMenu";
 
 interface SettingsProps {
   participants: ReduxParticipant[];
@@ -109,7 +115,7 @@ const Settings: React.FC<SettingsProps> = (props: SettingsProps) => {
 
   return (
     <>
-      {/* <SettingsMenu
+      <SettingsMenu
         onParticipantListOpen={() => props.setIsManageParticipantOpen(true)}
         leaveConvo={async () => {
           try {
@@ -138,7 +144,7 @@ const Settings: React.FC<SettingsProps> = (props: SettingsProps) => {
         }}
         conversation={props.convo}
         addNotifications={addNotifications}
-      /> */}
+      />
       <ActionErrorModal
         errorText={showError || ERROR_MODAL_MESSAGES.CHANGE_CONVERSATION_NAME}
         isOpened={!!showError}

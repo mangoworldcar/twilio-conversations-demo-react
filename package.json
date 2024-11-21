@@ -25,7 +25,6 @@
     "dotenv": "10.0.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "file-saver": "2.0.5",
-    "firebase": "9.15.0",
     "highcharts": "^9.3.3",
     "javascript-time-ago": "^2.5.7",
     "libphonenumber-js": "1.10.24",

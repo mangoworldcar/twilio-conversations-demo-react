@@ -18,15 +18,10 @@ const runAutomationTests = (config: Config) => {
     }),
     new reusable.ReusedCommand(browsersOrb.commands.install_chromedriver),
     new commands.Run({ command: "./AutomationTests/scripts/decrypt.sh" }),
-    new commands.Run({
-      command:
-        "echo ${FIREBASE_CONFIG} | base64 -d > public/firebase-config.js",
-    }),
     new commands.Run({ command: "yarn build:wdio" }),
     // Last, run test harness
     new commands.Run({
-      command:
-        "./AutomationTests/scripts/run-tests.sh",
+      command: "./AutomationTests/scripts/run-tests.sh",
     }),
   ]);
   config.addJob(job);

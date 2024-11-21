@@ -25,8 +25,6 @@ function App(): ReactElement {
   ) => {
     try {
       for (const convo of conversations) {
-        console.log(convo);
-
         const { sid } = convo;
         const conversation = await client.peekConversationBySid(sid);
         await conversation.join();

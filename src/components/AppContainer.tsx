@@ -25,12 +25,6 @@ import stylesheet from "../styles";
 import { handlePromiseRejection } from "../helpers";
 import AppHeader from "./AppHeader";
 
-import {
-  initFcmServiceWorker,
-  subscribeFcmNotifications,
-  showNotification,
-} from "../firebase-support";
-
 async function loadUnreadMessagesCount(
   convo: Conversation,
   updateUnreadMessages: SetUnreadMessagesType
@@ -106,26 +100,10 @@ const AppContainer: React.FC = () => {
     }
     callback(sid, identity || friendlyName || "");
   };
-  useEffect(() => {
-    initFcmServiceWorker().catch(() => {
-      console.error(
-        "FCM initialization failed: no push notifications will be available"
-      );
-    });
-  }, []);
+
   useEffect(() => {
     const client = new Client(token);
     setClient(client);
-
-    const fcmInit = async () => {
-      await subscribeFcmNotifications(client);
-    };
-
-    fcmInit().catch(() => {
-      console.error(
-        "FCM initialization failed: no push notifications will be available"
-      );
-    });
 
 
     client.on("conversationJoined", (conversation) => {
@@ -167,7 +145,6 @@ const AppContainer: React.FC = () => {
       }, addNotifications);
     });
     client.on("messageAdded", async (message: Message) => {
-      console.log(message);
       await upsertMessage(message, upsertMessages, updateUnreadMessages);
       if (message.author === localStorage.getItem("username")) {
         clearAttachments(message.conversation.sid, "-1");
@@ -215,19 +192,6 @@ const AppContainer: React.FC = () => {
         () => removeMessages(message.conversation.sid, [message]),
         addNotifications
       );
-    });
-
-    client.on("pushNotification", (event) => {
-      // @ts-ignore
-      if (event.type !== "twilio.conversations.new_message") {
-        return;
-      }
-
-      if (Notification.permission === "granted") {
-        showNotification(event);
-      } else {
-        console.log("Push notification is skipped", Notification.permission);
-      }
     });
 
     client.on("tokenAboutToExpire", async () => {
