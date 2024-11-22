@@ -9,6 +9,7 @@ import Login from "./login/login";
 import AppContainer from "./AppContainer";
 import { actionCreators, AppState } from "../store";
 import { getToken } from "../api";
+import parsePhoneNumber from "libphonenumber-js";
 
 function App(): ReactElement {
   const [loading, setLoading] = useState(true);
@@ -27,6 +28,14 @@ function App(): ReactElement {
       for (const convo of conversations) {
         const { sid } = convo;
         const conversation = await client.peekConversationBySid(sid);
+        const messages = await conversation.getMessages();
+        const number = messages.items[0].author
+          ? parsePhoneNumber("+" + messages.items[0].author?.split("+")[1])
+          : null;
+
+        const author =
+          number?.formatInternational() + " " + number?.country ?? sid;
+        await conversation.updateFriendlyName(author);
         await conversation.join();
       }
     } catch (error) {
