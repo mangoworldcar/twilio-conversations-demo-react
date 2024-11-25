@@ -30,7 +30,7 @@ export default {
     display: "flex",
     justifyContent: "space-between",
     backgroundColor: "#06033A",
-    padding: "20px 25px",
+    padding: "15px 20px",
   },
   appLogoWrapper: {
     width: "40px",
@@ -91,7 +91,7 @@ export default {
   } as CSSProperties,
   buttonWrapper: {
     flexDirection: "row",
-    paddingRight: "16px",
+    paddingRight: "10px",
   } as CSSProperties,
   convosWrapperBox: {
     height: "100%",

@@ -12,10 +12,12 @@ import { actionCreators } from "../../store";
 import { MAX_FILE_SIZE } from "../../constants";
 import { getTypingMessage, unexpectedErrorNotification } from "../../helpers";
 import MessageInput from "./MessageInput";
-import SendMessageButton from "./SendMessageButton";
+
 import { ReduxConversation } from "../../store/reducers/convoReducer";
 import { getSdkConversationObject } from "../../conversations-objects";
 import { ReduxMessage } from "../../store/reducers/messageListReducer";
+import SendTemplateButton from "./SendTemplateButton";
+import SendMessageButton from "./SendMessageButton";
 
 interface SendMessageProps {
   convoSid: string;
@@ -96,8 +98,8 @@ const MessageInputField: React.FC<SendMessageProps> = (
     setFiles(existentFiles);
   };
 
-  const onMessageSend = async () => {
-    if (message.length == 0 && files.length == 0) {
+  const onMessageSend = async (isTempate?: boolean) => {
+    if (message.length == 0 && files.length == 0 && !isTempate) {
       return;
     }
 
@@ -106,6 +108,11 @@ const MessageInputField: React.FC<SendMessageProps> = (
 
     const newMessageBuilder = sdkConvo.prepareMessage().setBody(message);
 
+    if (isTempate) {
+      newMessageBuilder.setContentTemplate(
+        "HX23472fc5e019a5499c5f112168ff5b1e"
+      );
+    }
     // const newMessage: ReduxMessage = {
     //   author: client.user.identity,
     //   body: message,
@@ -178,6 +185,7 @@ const MessageInputField: React.FC<SendMessageProps> = (
         flexGrow={10}
         paddingBottom="space30"
         paddingTop="space40"
+        alignItems="center"
       >
         <Box
           paddingBottom="space30"
@@ -205,6 +213,20 @@ const MessageInputField: React.FC<SendMessageProps> = (
               onChange={onFilesChange}
             />
           </Button>
+        </Box>
+        <Box
+          paddingBottom="space30"
+          paddingLeft="space30"
+          paddingRight="space0"
+          paddingTop="space20"
+          display="flex"
+          flexDirection="column"
+          justifyContent="flex-start"
+          alignItems="start"
+        >
+          {message || files.length ? null : (
+            <SendTemplateButton onClick={() => onMessageSend(true)} />
+          )}
         </Box>
         <Box paddingRight="space50" flexGrow={10}>
           <MessageInput

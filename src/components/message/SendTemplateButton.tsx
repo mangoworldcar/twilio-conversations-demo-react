@@ -2,13 +2,12 @@ import { Button } from "@twilio-paste/button";
 import { Box } from "@twilio-paste/core";
 import styles from "../../styles";
 
-interface SendMessageButtonProps {
-  message: string;
+interface SendTemplateButtonProps {
   onClick: () => void;
 }
 
-const SendMessageButton: React.FC<SendMessageButtonProps> = (
-  props: SendMessageButtonProps
+const SendTemplateButton: React.FC<SendTemplateButtonProps> = (
+  props: SendTemplateButtonProps
 ) => {
   return (
     <Box style={styles.buttonWrapper}>
@@ -18,10 +17,10 @@ const SendMessageButton: React.FC<SendMessageButtonProps> = (
           props.onClick();
         }}
       >
-        Send Message
+        Send Template
       </Button>
     </Box>
   );
 };
 
-export default SendMessageButton;
+export default SendTemplateButton;
