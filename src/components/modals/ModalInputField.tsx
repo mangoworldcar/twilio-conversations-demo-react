@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { Label } from "@twilio-paste/label";
 import { Input } from "@twilio-paste/input";
+import { CustomizationProvider } from "@twilio-paste/core/customization";
 import { HelpText } from "@twilio-paste/help-text";
 import { Button } from "@twilio-paste/button";
 import { HideIcon } from "@twilio-paste/icons/esm/HideIcon";
@@ -50,47 +51,55 @@ const ModalInputField: React.FC<ModalInputProps> = (props: ModalInputProps) => {
       <Label htmlFor="modal-input">
         <div style={styles.modalInputLabel}>{props.label}</div>
       </Label>
-      <Input
-        id={props.id}
-        autoFocus={props.isFocused ?? false}
-        type={props.inputType ?? InputType.Text}
-        value={props.input}
-        placeholder={props.placeholder}
-        onChange={(e) => props.onChange(e.currentTarget.value)}
-        readOnly={props.readonly ?? false}
-        hasError={!!props.error}
-        onBlur={props.onBlur}
-        maxLength={props.maxLength}
-        insertBefore={prefixType}
-        insertAfter={
-          props.showPassword !== undefined && (
-            <>
-              <Button
-                variant="link"
-                onClick={() => {
-                  if (props.setShowPassword !== undefined) {
-                    props.setShowPassword(!props.showPassword);
-                  }
-                }}
-              >
-                {props.showPassword ? (
-                  <ShowIcon
-                    decorative={true}
-                    size="sizeIcon20"
-                    color="colorTextWeak"
-                  />
-                ) : (
-                  <HideIcon
-                    decorative={true}
-                    size="sizeIcon20"
-                    color="colorTextWeak"
-                  />
-                )}
-              </Button>
-            </>
-          )
-        }
-      />
+      <CustomizationProvider
+        elements={{
+          INPUT_ELEMENT: {
+            fontSize: "fontSize40",
+          },
+        }}
+      >
+        <Input
+          id={props.id}
+          autoFocus={props.isFocused ?? false}
+          type={props.inputType ?? InputType.Text}
+          value={props.input}
+          placeholder={props.placeholder}
+          onChange={(e) => props.onChange(e.currentTarget.value)}
+          readOnly={props.readonly ?? false}
+          hasError={!!props.error}
+          onBlur={props.onBlur}
+          maxLength={props.maxLength}
+          insertBefore={prefixType}
+          insertAfter={
+            props.showPassword !== undefined && (
+              <>
+                <Button
+                  variant="link"
+                  onClick={() => {
+                    if (props.setShowPassword !== undefined) {
+                      props.setShowPassword(!props.showPassword);
+                    }
+                  }}
+                >
+                  {props.showPassword ? (
+                    <ShowIcon
+                      decorative={true}
+                      size="sizeIcon20"
+                      color="colorTextWeak"
+                    />
+                  ) : (
+                    <HideIcon
+                      decorative={true}
+                      size="sizeIcon20"
+                      color="colorTextWeak"
+                    />
+                  )}
+                </Button>
+              </>
+            )
+          }
+        />
+      </CustomizationProvider>
       {props.error && (
         <HelpText id="error_help_text" variant="error">
           {props.error}

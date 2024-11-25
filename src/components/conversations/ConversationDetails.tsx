@@ -7,6 +7,7 @@ import Settings from "../settings/Settings";
 import React, { useState, useEffect, useRef } from "react";
 import { ReduxConversation } from "../../store/reducers/convoReducer";
 import { ReduxParticipant } from "../../store/reducers/participantsReducer";
+import { CustomizationProvider } from "@twilio-paste/customization";
 
 interface ConversationDetailsProps {
   convoSid: string;
@@ -101,12 +102,20 @@ const ConversationDetails: React.FC<ConversationDetailsProps> = (
           onClick={handleEditClick}
         >
           {isEditing ? (
-            <Input
-              type="text"
-              value={editedText}
-              onChange={(e) => handleInputChange(e.target.value)}
-              ref={inputRef}
-            />
+            <CustomizationProvider
+              elements={{
+                INPUT_ELEMENT: {
+                  fontSize: "fontSize40",
+                },
+              }}
+            >
+              <Input
+                type="text"
+                value={editedText}
+                onChange={(e) => handleInputChange(e.target.value)}
+                ref={inputRef}
+              />
+            </CustomizationProvider>
           ) : (
             <>{props.convo.friendlyName ?? props.convo.sid}</>
           )}

@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { filterConversations } from "./../../store/action-creators";
 import { AppState } from "../../store";
 import { getTranslation } from "./../../utils/localUtils";
+import { CustomizationProvider } from "@twilio-paste/customization";
 
 interface ConvosContainerProps {
   client?: Client;
@@ -44,16 +45,24 @@ const ConversationsContainer: React.FC<ConvosContainerProps> = (
           collapsed={listHidden}
         />
         <Box marginTop="space60">
-          <Input
-            aria-describedby="convo_string_search"
-            id="convoString"
-            name="convoString"
-            type="text"
-            placeholder={search}
-            onChange={(e) => handleSearch(e.target.value)}
-            required
-            autoFocus
-          />
+          <CustomizationProvider
+            elements={{
+              INPUT_ELEMENT: {
+                fontSize: "fontSize40",
+              },
+            }}
+          >
+            <Input
+              aria-describedby="convo_string_search"
+              id="convoString"
+              name="convoString"
+              type="text"
+              placeholder={search}
+              onChange={(e) => handleSearch(e.target.value)}
+              required
+              autoFocus
+            />
+          </CustomizationProvider>
         </Box>
       </Box>
       <Box style={styles.convoList}>
