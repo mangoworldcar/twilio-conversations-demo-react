@@ -18,7 +18,7 @@ const SendMessageButton: React.FC<SendMessageButtonProps> = (
           props.onClick();
         }}
       >
-        Send Message
+        Send
       </Button>
     </Box>
   );

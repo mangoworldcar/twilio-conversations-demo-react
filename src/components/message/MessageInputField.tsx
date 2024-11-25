@@ -1,8 +1,14 @@
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import {
+  ChangeEvent,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import { Client } from "@twilio/conversations";
+import { Client, ContentTemplateVariable } from "@twilio/conversations";
 import { AttachIcon } from "@twilio-paste/icons/esm/AttachIcon";
 import { Box, Button } from "@twilio-paste/core";
 import { useTheme } from "@twilio-paste/theme";
@@ -16,8 +22,8 @@ import MessageInput from "./MessageInput";
 import { ReduxConversation } from "../../store/reducers/convoReducer";
 import { getSdkConversationObject } from "../../conversations-objects";
 import { ReduxMessage } from "../../store/reducers/messageListReducer";
-import SendTemplateButton from "./SendTemplateButton";
 import SendMessageButton from "./SendMessageButton";
+import Select from "react-select";
 
 interface SendMessageProps {
   convoSid: string;
@@ -27,6 +33,10 @@ interface SendMessageProps {
   typingData: string[];
   droppedFiles: File[];
 }
+const options = [
+  { value: false, label: "message" },
+  { value: true, label: "template" },
+];
 
 const MessageInputField: React.FC<SendMessageProps> = (
   props: SendMessageProps
@@ -41,6 +51,17 @@ const MessageInputField: React.FC<SendMessageProps> = (
 
   const dispatch = useDispatch();
   const { addNotifications } = bindActionCreators(actionCreators, dispatch);
+
+  const [selectedOption, setSelectedOption] = useState<{
+    value: boolean;
+    label: string;
+  }>({ value: false, label: "message" });
+
+  const handleChange = (
+    selected: SetStateAction<{ value: boolean; label: string }>
+  ) => {
+    setSelectedOption(selected);
+  };
 
   useEffect(() => {
     setMessage("");
@@ -106,12 +127,20 @@ const MessageInputField: React.FC<SendMessageProps> = (
     const { convo } = props;
     const sdkConvo = getSdkConversationObject(convo);
 
-    const newMessageBuilder = sdkConvo.prepareMessage().setBody(message);
+    const newMessageBuilder = sdkConvo.prepareMessage();
+
+    const nameVariable = new ContentTemplateVariable("1", message);
+
+    // 템플릿 변수 배열 구성
+    const templateVariables: ContentTemplateVariable[] = [nameVariable];
 
     if (isTempate) {
       newMessageBuilder.setContentTemplate(
-        "HX23472fc5e019a5499c5f112168ff5b1e"
+        "HX5ad268ebbafe098b0b1d3beb58729469",
+        templateVariables
       );
+    } else {
+      newMessageBuilder.setBody(message);
     }
     // const newMessage: ReduxMessage = {
     //   author: client.user.identity,
@@ -224,9 +253,28 @@ const MessageInputField: React.FC<SendMessageProps> = (
           justifyContent="flex-start"
           alignItems="start"
         >
-          {message || files.length ? null : (
-            <SendTemplateButton onClick={() => onMessageSend(true)} />
-          )}
+          {/* <SendTemplateButton onClick={() => onMessageSend(true)} /> */}
+          <div>
+            <Select
+              options={options}
+              value={selectedOption}
+              onChange={handleChange}
+              placeholder="Select an option"
+              menuPlacement="top" // 드롭다운이 위로 열리도록 설정\
+              styles={{
+                control: (base: any) => ({
+                  ...base,
+                  cursor: "pointer", // 컨트롤 영역에 pointer 적용
+                }),
+                option: (base: any, { isFocused }: any) => ({
+                  ...base,
+                  cursor: "pointer", // 드롭다운 옵션에 pointer 적용
+                  backgroundColor: isFocused ? "#f0f0f0" : "white", // hover 효과
+                  color: "black",
+                }),
+              }}
+            />
+          </div>
         </Box>
         <Box paddingRight="space50" flexGrow={10}>
           <MessageInput
@@ -249,7 +297,10 @@ const MessageInputField: React.FC<SendMessageProps> = (
           alignItems="start"
         >
           {message || files.length ? (
-            <SendMessageButton message={message} onClick={onMessageSend} />
+            <SendMessageButton
+              message={message}
+              onClick={() => onMessageSend(selectedOption.value)}
+            />
           ) : null}
         </Box>
       </Box>
