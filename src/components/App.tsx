@@ -66,9 +66,7 @@ function App(): ReactElement {
       getToken(username, password)
         .then(async (data) => {
           login(data.token);
-          const client = new Client(data.token, {
-            retryWhenThrottledOverride: false, // 제한된 요청을 재시도하지 않음
-          });
+          const client = new Client(data.token);
           const subscribedConvo = await client.getSubscribedConversations();
 
           const notJoinedConvo = findUnsubscribedSids(subscribedConvo, data);

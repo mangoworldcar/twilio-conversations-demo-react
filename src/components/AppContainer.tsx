@@ -102,9 +102,7 @@ const AppContainer: React.FC = () => {
   };
 
   useEffect(() => {
-    const client = new Client(token, {
-      retryWhenThrottledOverride: false, // 제한된 요청을 재시도하지 않음
-    });
+    const client = new Client(token);
     setClient(client);
 
 
