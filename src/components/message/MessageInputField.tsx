@@ -129,12 +129,14 @@ const MessageInputField: React.FC<SendMessageProps> = (
 
     const newMessageBuilder = sdkConvo.prepareMessage();
 
-    const nameVariable = new ContentTemplateVariable("1", message);
-
-    // 템플릿 변수 배열 구성
-    const templateVariables: ContentTemplateVariable[] = [nameVariable];
-
     if (isTempate) {
+      const nameVariable = new ContentTemplateVariable(
+        "1",
+        message.replaceAll(/\r?\n|\r/g, " ")
+      );
+
+      const templateVariables: ContentTemplateVariable[] = [nameVariable];
+
       newMessageBuilder.setContentTemplate(
         "HX5ad268ebbafe098b0b1d3beb58729469",
         templateVariables
@@ -142,36 +144,13 @@ const MessageInputField: React.FC<SendMessageProps> = (
     } else {
       newMessageBuilder.setBody(message);
     }
-    // const newMessage: ReduxMessage = {
-    //   author: client.user.identity,
-    //   body: message,
-    //   attributes: {},
-    //   dateCreated: currentDate,
-    //   index: -1,
-    //   participantSid: "",
-    //   sid: "-1",
-    //   aggregatedDeliveryReceipt: null,
-    //   attachedMedia: [],
-    // } as ReduxMessage;
 
     for (const file of files) {
       const fileData = new FormData();
       fileData.set(file.name, file, file.name);
-
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      // newMessage.attachedMedia.push({
-      //   sid: key + "",
-      //   size: file.size,
-      //   filename: file.name,
-      //   contentType: file.type,
-      // });
-      // addAttachment(convo.sid, "-1", key + "", file);
       newMessageBuilder.addMedia(fileData);
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // upsertMessages(convo.sid, [newMessage]);
+
     setMessage("");
     setFiles([]);
     const messageIndex = await newMessageBuilder.build().send();
@@ -285,7 +264,7 @@ const MessageInputField: React.FC<SendMessageProps> = (
               setMessage(e);
             }}
             onEnterKeyPress={async () => {
-              await onMessageSend();
+              await onMessageSend(selectedOption.value);
             }}
             onFileRemove={onFileRemove}
           />
