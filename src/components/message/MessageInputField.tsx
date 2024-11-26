@@ -119,8 +119,8 @@ const MessageInputField: React.FC<SendMessageProps> = (
     setFiles(existentFiles);
   };
 
-  const onMessageSend = async (isTempate?: boolean) => {
-    if (message.length == 0 && files.length == 0 && !isTempate) {
+  const onMessageSend = async (isTemplate?: boolean) => {
+    if (message.length == 0 && files.length == 0 && !isTemplate) {
       return;
     }
 
@@ -129,7 +129,18 @@ const MessageInputField: React.FC<SendMessageProps> = (
 
     const newMessageBuilder = sdkConvo.prepareMessage();
 
-    if (isTempate) {
+    if (isTemplate) {
+      console.log(message.replaceAll(/\r?\n|\r/g, " ").length);
+
+      if (message.replaceAll(/\r?\n|\r/g, " ").length > 256) {
+        alert(
+          "Limit exceeded, reduce by " +
+            (message.replaceAll(/\r?\n|\r/g, " ").length - 256) +
+            " letters"
+        );
+        return;
+      }
+
       const nameVariable = new ContentTemplateVariable(
         "1",
         message.replaceAll(/\r?\n|\r/g, " ")
@@ -195,33 +206,36 @@ const MessageInputField: React.FC<SendMessageProps> = (
         paddingTop="space40"
         alignItems="center"
       >
-        <Box
-          paddingBottom="space30"
-          paddingLeft="space50"
-          paddingRight="space10"
-          paddingTop="space20"
-          display="flex"
-          flexDirection="column"
-          justifyContent="flex-start"
-          alignItems="start"
-        >
-          <Button variant="link">
-            <label htmlFor="file-input">
-              <AttachIcon
-                decorative={true}
-                title="Attach file"
-                size="sizeIcon50"
+        {!selectedOption.value && (
+          <Box
+            paddingBottom="space30"
+            paddingLeft="space50"
+            paddingRight="space10"
+            paddingTop="space20"
+            display="flex"
+            flexDirection="column"
+            justifyContent="flex-start"
+            alignItems="start"
+          >
+            <Button variant="link">
+              <label htmlFor="file-input">
+                <AttachIcon
+                  decorative={true}
+                  title="Attach file"
+                  size="sizeIcon50"
+                />
+              </label>
+              <input
+                id="file-input"
+                key={filesInputKey}
+                type="file"
+                style={{ display: "none" }}
+                onChange={onFilesChange}
               />
-            </label>
-            <input
-              id="file-input"
-              key={filesInputKey}
-              type="file"
-              style={{ display: "none" }}
-              onChange={onFilesChange}
-            />
-          </Button>
-        </Box>
+            </Button>
+          </Box>
+        )}
+
         <Box
           paddingBottom="space30"
           paddingLeft="space30"
