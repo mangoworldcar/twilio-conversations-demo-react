@@ -14,7 +14,6 @@ import BellMuted from "../icons/BellMuted";
 
 import { NOTIFICATION_LEVEL } from "../../constants";
 import { SetSidType, SetUnreadMessagesType } from "../../types";
-import { getMessageStatus } from "../../api";
 
 import { getLastMessageTime } from "./../../utils/timestampUtils";
 
@@ -103,28 +102,28 @@ const ConversationView: React.FC<SingleConvoProps> = (
     setBackgroundColor(theme.backgroundColors.colorBackgroundRowStriped);
   }, [props.currentConvoSid, convo.sid]);
 
-  useEffect(() => {
-    if (myMessage && !props.typingInfo.length) {
-      getMessageStatus(myMessage, props.participants).then((statuses) => {
-        if (statuses[MessageStatus.Read]) {
-          setLastMsgStatus(MessageStatus.Read);
-          return;
-        }
-        if (statuses[MessageStatus.Delivered]) {
-          setLastMsgStatus(MessageStatus.Delivered);
-          return;
-        }
-        if (statuses[MessageStatus.Failed]) {
-          setLastMsgStatus(MessageStatus.Failed);
-          return;
-        }
-        if (statuses[MessageStatus.Sending]) {
-          setLastMsgStatus(MessageStatus.Sending);
-          return;
-        }
-      });
-    }
-  }, [convo, myMessage, lastMessage, props.participants, props.typingInfo]);
+  // useEffect(() => {
+  //   if (myMessage && !props.typingInfo.length) {
+  //     getMessageStatus(myMessage, props.participants).then((statuses) => {
+  //       if (statuses[MessageStatus.Read]) {
+  //         setLastMsgStatus(MessageStatus.Read);
+  //         return;
+  //       }
+  //       if (statuses[MessageStatus.Delivered]) {
+  //         setLastMsgStatus(MessageStatus.Delivered);
+  //         return;
+  //       }
+  //       if (statuses[MessageStatus.Failed]) {
+  //         setLastMsgStatus(MessageStatus.Failed);
+  //         return;
+  //       }
+  //       if (statuses[MessageStatus.Sending]) {
+  //         setLastMsgStatus(MessageStatus.Sending);
+  //         return;
+  //       }
+  //     });
+  //   }
+  // }, [convo, myMessage, props.participants, props.typingInfo]);
 
   return (
     <Box

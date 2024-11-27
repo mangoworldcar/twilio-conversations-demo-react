@@ -18,9 +18,9 @@ import {
   Separator,
   Badge,
   Box,
+  MediaObject,
 } from "@twilio-paste/core";
 import { CustomizationProvider } from "@twilio-paste/core/customization";
-
 import { getBlobFile } from "../../api";
 import { actionCreators, AppState } from "../../store";
 import ImagePreviewModal from "../modals/ImagePreviewModal";
@@ -45,7 +45,7 @@ import {
 } from "./../../utils/timestampUtils";
 import { useDropzone } from "react-dropzone";
 import { MAX_FILE_SIZE } from "../../constants";
-
+import { Client } from "@twilio/conversations";
 interface MessageListProps {
   messages: ReduxMessage[];
   conversation: ReduxConversation;
@@ -85,6 +85,7 @@ const MessageList: React.FC<MessageListProps> = (props: MessageListProps) => {
     (state: AppState) => state.attachments[conversation.sid]
   );
   const users = useSelector((state: AppState) => state.users);
+  const token = useSelector((state: AppState) => state.token);
 
   const [imagePreview, setImagePreview] = useState<{
     message: ReduxMessage;
@@ -220,6 +221,9 @@ const MessageList: React.FC<MessageListProps> = (props: MessageListProps) => {
         CHAT_MESSAGE: {
           marginRight: "space0",
           justifyContent: "flex-start",
+        },
+        MEDIA_OBJECT: {
+          cursor: "pointer",
         },
       }}
     >
@@ -375,6 +379,54 @@ const MessageList: React.FC<MessageListProps> = (props: MessageListProps) => {
                       }`,
                     }}
                   >
+                    <MediaObject
+                      verticalAlign="center"
+                      onClick={async () => {
+                        const userConfirmed =
+                          window.confirm("이 작업을 진행하시겠습니까?");
+
+                        // 사용자가 확인을 눌렀을 경우에만 코드 실행
+                        if (userConfirmed) {
+                          const client = new Client(token);
+
+                          try {
+                            const subscribedConvo =
+                              await client.getConversationBySid(
+                                conversation.sid
+                              );
+                            const messagestoFind =
+                              await subscribedConvo.getMessages();
+                            const messageToRemove: any =
+                              messagestoFind.items.find(
+                                (item: { sid: string }) =>
+                                  item.sid === message.sid
+                              );
+
+                            if (messageToRemove) {
+                              await messageToRemove.remove();
+                              alert("메시지가 성공적으로 삭제되었습니다.");
+                            } else {
+                              alert("해당 메시지를 찾을 수 없습니다.");
+                            }
+                          } catch (error) {
+                            console.error("오류 발생:", error);
+                            alert(
+                              "오류가 발생했습니다. 콘솔 로그를 확인하세요."
+                            );
+                          }
+                        } else {
+                          alert("작업이 취소되었습니다.");
+                        }
+                      }}
+                    >
+                      {/* <MediaFigure spacing="space20">
+                        <DeleteIcon
+                          decorative={false}
+                          title="Delete"
+                          color="colorTextErrorStrong"
+                        />
+                      </MediaFigure> */}
+                    </MediaObject>
                     <ChatMessageMeta
                       aria-label={`said by ${getAuthorFriendlyName(message)}`}
                     >
