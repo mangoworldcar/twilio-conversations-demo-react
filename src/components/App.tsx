@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { ReactElement } from "react";
-import { Client, Conversation, Paginator } from "@twilio/conversations";
+import { Client } from "@twilio/conversations";
 import { Box, Spinner } from "@twilio-paste/core";
 
 import Login from "./login/login";
@@ -36,6 +36,7 @@ function App(): ReactElement {
         const author =
           number?.formatInternational() + " " + number?.country ?? sid;
         await conversation.updateFriendlyName(author);
+
         await conversation.join();
       }
     } catch (error) {
@@ -44,14 +45,12 @@ function App(): ReactElement {
   };
 
   function findUnsubscribedSids(
-    subscribedConvo: Paginator<Conversation>,
+    allConversations: any[],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: { token?: string; conversations: any[] }
   ) {
     // subscribedConvo.items의 sid를 Set으로 저장
-    const subscribedSids = new Set(
-      subscribedConvo.items.map((item) => item.sid)
-    );
+    const subscribedSids = new Set(allConversations.map((item) => item.sid));
 
     // data.conversations의 sid 중 subscribedSids에 없는 sid 찾기
     const unsubscribedSids = data.conversations.filter(
@@ -67,9 +66,17 @@ function App(): ReactElement {
         .then(async (data) => {
           login(data.token);
           const client = new Client(data.token);
-          const subscribedConvo = await client.getSubscribedConversations();
+          let allConversations: any[] = [];
+          let page = await client.getSubscribedConversations();
 
-          const notJoinedConvo = findUnsubscribedSids(subscribedConvo, data);
+          allConversations = allConversations.concat(page.items);
+
+          while (page.hasNextPage) {
+            page = await page.nextPage();
+            allConversations = allConversations.concat(page.items);
+          }
+
+          const notJoinedConvo = findUnsubscribedSids(allConversations, data);
           await joinAllConversation(client, notJoinedConvo);
         })
         .catch(() => {
