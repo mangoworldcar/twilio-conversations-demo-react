@@ -35,7 +35,8 @@ const MessageStatus: React.FC<MessageStatusProps> = (props) => {
   useEffect(() => {
     getMessageStatus(props.message, props.channelParticipants).then(
       (receipt) => {
-        setStatus(receipt);
+        if (!props.message.body?.includes("MANGOCAR CO.,LTD."))
+          setStatus(receipt);
       }
     );
   }, [props.channelParticipants, props.message]);
