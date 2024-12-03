@@ -8,7 +8,7 @@ import {
 import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import { Client, ContentTemplateVariable } from "@twilio/conversations";
+import { Client } from "@twilio/conversations";
 import { AttachIcon } from "@twilio-paste/icons/esm/AttachIcon";
 import { Box, Button } from "@twilio-paste/core";
 import { useTheme } from "@twilio-paste/theme";
@@ -24,6 +24,7 @@ import { getSdkConversationObject } from "../../conversations-objects";
 import { ReduxMessage } from "../../store/reducers/messageListReducer";
 import SendMessageButton from "./SendMessageButton";
 import Select from "react-select";
+import axios from "axios";
 
 interface SendMessageProps {
   convoSid: string;
@@ -126,32 +127,35 @@ const MessageInputField: React.FC<SendMessageProps> = (
 
     const { convo } = props;
     const sdkConvo = getSdkConversationObject(convo);
+    const participants = await sdkConvo.getParticipants();
 
     const newMessageBuilder = sdkConvo.prepareMessage();
-
     if (isTemplate) {
-      console.log(message.replaceAll(/\r?\n|\r/g, " ").length);
+      const data = {
+        sid: sdkConvo.sid,
+        val1: message.replaceAll(/\r?\n|\r/g, "\\n"),
+        val2: (
+          participants.find(
+            (participant) => (participant as any).bindings.whatsapp?.address
+          ) as any
+        )?.bindings.whatsapp.address,
+      };
 
-      if (message.replaceAll(/\r?\n|\r/g, " ").length > 256) {
-        alert(
-          "Limit exceeded, reduce by " +
-            (message.replaceAll(/\r?\n|\r/g, " ").length - 256) +
-            " letters"
-        );
-        return;
-      }
-
-      const nameVariable = new ContentTemplateVariable(
-        "1",
-        message.replaceAll(/\r?\n|\r/g, " ")
-      );
-
-      const templateVariables: ContentTemplateVariable[] = [nameVariable];
-
-      newMessageBuilder.setContentTemplate(
-        "HX5ad268ebbafe098b0b1d3beb58729469",
-        templateVariables
-      );
+      axios
+        .post("https://mangocar-5426.twil.io/send-template", data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          console.log("Response:", response.data);
+        })
+        .catch((error) => {
+          console.error(
+            "Error:",
+            error.response ? error.response.data : error.message
+          );
+        });
     } else {
       newMessageBuilder.setBody(message);
     }

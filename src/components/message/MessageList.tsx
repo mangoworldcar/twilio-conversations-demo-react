@@ -69,6 +69,7 @@ const MessageList: React.FC<MessageListProps> = (props: MessageListProps) => {
     use24hTimeFormat,
     handleDroppedFiles,
   } = props;
+
   if (messages === undefined) {
     return <div className="empty" />;
   }
@@ -242,7 +243,7 @@ const MessageList: React.FC<MessageListProps> = (props: MessageListProps) => {
             messageFiles.push(file);
           });
 
-          const wrappedBody = wrap(message.body ?? "", {
+          const wrappedBody = wrap(message.body?.replace(/\\n/g, "\n") ?? "", {
             width: MAX_MESSAGE_LINE_WIDTH,
             indent: "",
             cut: true,

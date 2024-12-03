@@ -33,8 +33,10 @@ function App(): ReactElement {
           ? parsePhoneNumber("+" + messages.items[0].author?.split("+")[1])
           : null;
 
-        const author =
-          number?.formatInternational() + " " + number?.country ?? sid;
+        const author = number?.formatInternational()
+          ? `${number.formatInternational()} ${number.country}`
+          : conversation.friendlyName || sid;
+
         await conversation.updateFriendlyName(author);
 
         await conversation.join();
